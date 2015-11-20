@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.23107.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Claims.Tests", "Authentication.Claims.Tests\Authentication.Claims.Tests.csproj", "{0DFA514D-203F-406D-9655-506E41F89C5B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Authentication.Claims", "Authentication.Claims\Authentication.Claims.csproj", "{88D64EF7-8D82-4119-8B3D-B4043FFFB943}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "root", "root", "{D4B65A70-F4F2-4E13-8F71-B8DCD9E0F0F6}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+		appveyor.yml = appveyor.yml
+		LICENSE = LICENSE
+		README.md = README.md
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0DFA514D-203F-406D-9655-506E41F89C5B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0DFA514D-203F-406D-9655-506E41F89C5B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0DFA514D-203F-406D-9655-506E41F89C5B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0DFA514D-203F-406D-9655-506E41F89C5B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{88D64EF7-8D82-4119-8B3D-B4043FFFB943}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{88D64EF7-8D82-4119-8B3D-B4043FFFB943}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{88D64EF7-8D82-4119-8B3D-B4043FFFB943}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{88D64EF7-8D82-4119-8B3D-B4043FFFB943}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
