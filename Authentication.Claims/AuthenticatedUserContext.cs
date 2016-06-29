@@ -29,6 +29,11 @@ namespace Affecto.Authentication.Claims
             get { return GetClaim(ClaimType.Name); }
         }
 
+        public string AccountName
+        {
+            get { return GetClaim(ClaimType.AccountName); }
+        }
+
         public bool IsSystemUser
         {
             get
@@ -88,12 +93,12 @@ namespace Affecto.Authentication.Claims
             return GetClaim(ClaimTypePrefix.CustomProperty + customPropertyName);
         }
 
-        private bool HasClaim(string name)
+        public bool HasClaim(string name)
         {
             return identity.FindFirst(name) != null;
         }
 
-        private string GetClaim(string name)
+        public string GetClaim(string name)
         {
             List<Claim> claims = identity.FindAll(name).ToList();
 

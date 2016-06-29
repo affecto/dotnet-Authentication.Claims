@@ -7,6 +7,6 @@
     <description>$description$</description>
     <projectUrl>https://github.com/affecto/dotnet-Authentication.Claims</projectUrl>
     <tags>affecto authentication claim claims</tags>
-    <releaseNotes>Moved to GitHub.</releaseNotes>
+    <releaseNotes>Added a property for account name and made methods GetClaim and HasClaim public.</releaseNotes>
   </metadata>
 </package>
