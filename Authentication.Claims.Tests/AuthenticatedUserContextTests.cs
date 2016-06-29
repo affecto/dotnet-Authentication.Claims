@@ -157,9 +157,35 @@ namespace Authentication.Claims.Tests
         }
 
         [TestMethod]
+        public void AccountNameIsRetrieved()
+        {
+            const string name = "account name";
+            claimsIdentity.AddClaim(new Claim(ClaimType.AccountName, name));
+
+            Assert.AreEqual(name, sut.AccountName);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ClaimNotFoundException))]
+        public void AccountNameIsNotDefined()
+        {
+            string userName = sut.AccountName;
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MultipleClaimsFoundException))]
+        public void MultipleAccountNames()
+        {
+            claimsIdentity.AddClaim(new Claim(ClaimType.AccountName, "name1"));
+            claimsIdentity.AddClaim(new Claim(ClaimType.AccountName, "name2"));
+
+            string userName = sut.AccountName;
+        }
+
+        [TestMethod]
         public void IsSystemUserIsSetToTrue()
         {
-            claimsIdentity.AddClaim(new Claim(ClaimType.IsSystemUser, Boolean.TrueString));
+            claimsIdentity.AddClaim(new Claim(ClaimType.IsSystemUser, bool.TrueString));
 
             Assert.IsTrue(sut.IsSystemUser);
         }
@@ -167,7 +193,7 @@ namespace Authentication.Claims.Tests
         [TestMethod]
         public void IsSystemUserIsSetToFalse()
         {
-            claimsIdentity.AddClaim(new Claim(ClaimType.IsSystemUser, Boolean.FalseString));
+            claimsIdentity.AddClaim(new Claim(ClaimType.IsSystemUser, bool.FalseString));
 
             Assert.IsFalse(sut.IsSystemUser);
         }
@@ -190,8 +216,8 @@ namespace Authentication.Claims.Tests
         [ExpectedException(typeof(MultipleClaimsFoundException))]
         public void IsSystemUserIsDefinedMultipleTimes()
         {
-            claimsIdentity.AddClaim(new Claim(ClaimType.IsSystemUser, Boolean.TrueString));
-            claimsIdentity.AddClaim(new Claim(ClaimType.IsSystemUser, Boolean.FalseString));
+            claimsIdentity.AddClaim(new Claim(ClaimType.IsSystemUser, bool.TrueString));
+            claimsIdentity.AddClaim(new Claim(ClaimType.IsSystemUser, bool.FalseString));
 
             bool isSystemUser = sut.IsSystemUser;
         }
@@ -264,6 +290,57 @@ namespace Authentication.Claims.Tests
             string value = sut.GetCustomPropertyValue(propertyName);
 
             Assert.AreEqual(expectedValue, value);
+        }
+
+        [TestMethod]
+        public void DoesNotContainClaim()
+        {
+            Assert.IsFalse(sut.HasClaim(ClaimType.Name));
+        }
+
+        [TestMethod]
+        public void ContainsSingleClaim()
+        {
+            const string name = "user name";
+            claimsIdentity.AddClaim(new Claim(ClaimType.Name, name));
+
+            Assert.IsTrue(sut.HasClaim(ClaimType.Name));
+        }
+
+        [TestMethod]
+        public void ContainsMultipleClaims()
+        {
+            const string name = "user name";
+            claimsIdentity.AddClaim(new Claim(ClaimType.Name, name));
+            claimsIdentity.AddClaim(new Claim(ClaimType.Name, name));
+
+            Assert.IsTrue(sut.HasClaim(ClaimType.Name));
+        }
+
+        [TestMethod]
+        public void SingleClaimIsRetrieved()
+        {
+            const string name = "user name";
+            claimsIdentity.AddClaim(new Claim(ClaimType.Name, name));
+
+            Assert.AreEqual(name, sut.GetClaim(ClaimType.Name));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ClaimNotFoundException))]
+        public void ClaimIsNotDefined()
+        {
+            sut.GetClaim(ClaimType.Name);
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(MultipleClaimsFoundException))]
+        public void MultipleClaimsDefined()
+        {
+            claimsIdentity.AddClaim(new Claim(ClaimType.Name, "name1"));
+            claimsIdentity.AddClaim(new Claim(ClaimType.Name, "name2"));
+
+            sut.GetClaim(ClaimType.Name);
         }
     }
 }
