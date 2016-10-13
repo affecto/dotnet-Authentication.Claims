@@ -15,5 +15,6 @@ namespace Affecto.Authentication.Claims
         string GetCustomPropertyValue(string customPropertyName);
         bool HasClaim(string name);
         string GetClaim(string name);
+        bool HasRole(string role);
     }
 }
