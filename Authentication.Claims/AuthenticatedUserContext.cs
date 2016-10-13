@@ -57,22 +57,22 @@ namespace Affecto.Authentication.Claims
             return identity.HasClaim(ClaimType.Permission, permission);
         }
 
-        public bool IsInGroup(string groupName)
-        {
-            if (groupName == null)
-            {
-                throw new ArgumentNullException("groupName");
-            }
-
-            return identity.HasClaim(ClaimType.Group, groupName);
-        }
-
         public void CheckPermission(string permission)
         {
             if (!HasPermission(permission))
             {
                 throw new InsufficientPermissionsException(permission);
             }
+        }
+
+        public bool HasRole(string role)
+        {
+            if (role == null)
+            {
+                throw new ArgumentNullException("role");
+            }
+
+            return identity.HasClaim(ClaimType.Role, role);
         }
 
         public bool HasCustomProperty(string customPropertyName)
@@ -91,6 +91,16 @@ namespace Affecto.Authentication.Claims
                 throw new ArgumentNullException("customPropertyName");
             }
             return GetClaim(ClaimTypePrefix.CustomProperty + customPropertyName);
+        }
+
+        public bool IsInGroup(string groupName)
+        {
+            if (groupName == null)
+            {
+                throw new ArgumentNullException("groupName");
+            }
+
+            return identity.HasClaim(ClaimType.Group, groupName);
         }
 
         public bool HasClaim(string name)
