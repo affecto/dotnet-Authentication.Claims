@@ -12,6 +12,8 @@ namespace Authentication.Claims.Tests
     {
         private const string Permission = "permission";
         private const string NotExistingPermission = "Not existing permission";
+        private const string Role = "role";
+        private const string NotExistingRole = "Not existing role";
         private const string Group = "group";
         private const string NotExistingGroup = "Not existing group";
 
@@ -23,18 +25,22 @@ namespace Authentication.Claims.Tests
         {
             claimsIdentity = new ClaimsIdentity();
             claimsIdentity.AddClaim(new Claim(ClaimType.Permission, Permission));
+            claimsIdentity.AddClaim(new Claim(ClaimType.Permission, "OtherPermission"));
+            claimsIdentity.AddClaim(new Claim(ClaimType.Role, Role));
+            claimsIdentity.AddClaim(new Claim(ClaimType.Role, "OtherRole"));
             claimsIdentity.AddClaim(new Claim(ClaimType.Group, Group));
+            claimsIdentity.AddClaim(new Claim(ClaimType.Group, "OtherGroup"));
             sut = new AuthenticatedUserContext(claimsIdentity);
         }
 
         [TestMethod]
-        public void AuthenticatedUserContextHasSpecificPermission()
+        public void HasSpecificPermission()
         {
             Assert.IsTrue(sut.HasPermission(Permission));
         }
 
         [TestMethod]
-        public void AuthenticatedUserContextDoesntContainSpecificPermission()
+        public void DoesNotHaveSpecificPermission()
         {
             Assert.IsFalse(sut.HasPermission(NotExistingPermission));
         }
@@ -53,13 +59,38 @@ namespace Authentication.Claims.Tests
         }
 
         [TestMethod]
-        public void AuthenticatedUserContextHasSpecificGroup()
+        public void HasSpecificRole()
+        {
+            Assert.IsTrue(sut.HasRole(Role));
+        }
+
+        [TestMethod]
+        public void DoesNotHaveSpecificRole()
+        {
+            Assert.IsFalse(sut.HasRole(NotExistingRole));
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ArgumentNullException))]
+        public void RoleNameIsNotDefined()
+        {
+            sut.HasRole(null);
+        }
+
+        [TestMethod]
+        public void RoleNameIsEmpty()
+        {
+            Assert.IsFalse(sut.HasRole(string.Empty));
+        }
+
+        [TestMethod]
+        public void HasSpecificGroup()
         {
             Assert.IsTrue(sut.IsInGroup(Group));
         }
 
         [TestMethod]
-        public void AuthenticatedUserContextDoesntContainSpecificGroup()
+        public void DoesNotHaveSpecificGroup()
         {
             Assert.IsFalse(sut.IsInGroup(NotExistingGroup));
         }
