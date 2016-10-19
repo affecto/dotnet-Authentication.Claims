@@ -1,6 +1,8 @@
 ﻿// ReSharper disable UnusedVariable
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
 using Affecto.Authentication.Claims;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -96,6 +98,16 @@ namespace Authentication.Claims.Tests
         }
 
         [TestMethod]
+        public void HasSpecificGroups()
+        {
+            IReadOnlyCollection<string> groups = sut.GetGroups();
+
+            Assert.AreEqual(2, groups.Count);
+            Assert.AreEqual(Group, groups.ElementAt(0));
+            Assert.AreEqual("OtherGroup", groups.ElementAt(1));
+        }
+
+        [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
         public void GroupNameIsNotDefined()
         {
@@ -109,14 +121,14 @@ namespace Authentication.Claims.Tests
         }
 
         [TestMethod]
-        public void UserBelongsToSpecifiedGroup()
+        public void UserHasPermission()
         {
             sut.CheckPermission(Permission);
         }
 
         [TestMethod]
         [ExpectedException(typeof(InsufficientPermissionsException))]
-        public void UserDoesNotBelongToSpecifiedGroup()
+        public void UserDoesNotHavePermission()
         {
             sut.CheckPermission(NotExistingPermission);
         }
@@ -372,6 +384,28 @@ namespace Authentication.Claims.Tests
             claimsIdentity.AddClaim(new Claim(ClaimType.Name, "name2"));
 
             sut.GetClaim(ClaimType.Name);
+        }
+
+        [TestMethod]
+        public void MultipleClaimsRetrieved()
+        {
+            const string name1 = "user name 1";
+            const string name2 = "user name 2";
+            claimsIdentity.AddClaim(new Claim(ClaimType.Name, name1));
+            claimsIdentity.AddClaim(new Claim(ClaimType.Name, name2));
+
+            IReadOnlyCollection<string> claims = sut.GetClaims(ClaimType.Name);
+
+            Assert.AreEqual(2, claims.Count);
+            Assert.AreEqual(name1, claims.First());
+            Assert.AreEqual(name2, claims.Last());
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(ClaimNotFoundException))]
+        public void MultipleClaimsNotDefined()
+        {
+            sut.GetClaims(ClaimType.Name);
         }
     }
 }

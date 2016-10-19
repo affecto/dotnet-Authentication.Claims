@@ -43,6 +43,7 @@ namespace Affecto.Authentication.Claims
                 {
                     return result;
                 }
+
                 return false;
             }
         }
@@ -81,6 +82,7 @@ namespace Affecto.Authentication.Claims
             {
                 throw new ArgumentNullException("customPropertyName");
             }
+
             return HasClaim(ClaimTypePrefix.CustomProperty + customPropertyName);
         }
 
@@ -90,7 +92,13 @@ namespace Affecto.Authentication.Claims
             {
                 throw new ArgumentNullException("customPropertyName");
             }
+
             return GetClaim(ClaimTypePrefix.CustomProperty + customPropertyName);
+        }
+
+        public IReadOnlyCollection<string> GetGroups()
+        {
+            return GetClaims(ClaimType.Group);
         }
 
         public bool IsInGroup(string groupName)
@@ -110,18 +118,26 @@ namespace Affecto.Authentication.Claims
 
         public string GetClaim(string name)
         {
+            IReadOnlyCollection<string> claims = GetClaims(name);
+
+            if (claims.Count > 1)
+            {
+                throw new MultipleClaimsFoundException(name);
+            }
+
+            return claims.Single();
+        }
+
+        public IReadOnlyCollection<string> GetClaims(string name)
+        {
             List<Claim> claims = identity.FindAll(name).ToList();
 
             if (claims.Count == 0)
             {
                 throw new ClaimNotFoundException(name);
             }
-            if (claims.Count > 1)
-            {
-                throw new MultipleClaimsFoundException(name);
-            }
 
-            return claims[0].Value;
+            return claims.Select(c => c.Value).ToList();
         }
     }
 }

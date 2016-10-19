@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Affecto.Authentication.Claims
 {
@@ -16,5 +17,7 @@ namespace Affecto.Authentication.Claims
         bool HasClaim(string name);
         string GetClaim(string name);
         bool HasRole(string role);
+        IReadOnlyCollection<string> GetGroups();
+        IReadOnlyCollection<string> GetClaims(string name);
     }
 }
