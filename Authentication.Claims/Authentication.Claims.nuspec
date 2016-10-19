@@ -7,6 +7,6 @@
     <description>$description$</description>
     <projectUrl>https://github.com/affecto/dotnet-Authentication.Claims</projectUrl>
     <tags>affecto authentication claim claims</tags>
-    <releaseNotes>Added a property for checking if user has a specific role.</releaseNotes>
+    <releaseNotes>Added methods for getting collections of claim values and groups.</releaseNotes>
   </metadata>
 </package>
